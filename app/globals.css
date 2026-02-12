@@ -199,6 +199,13 @@
   font-weight: 400;
 }
 
+@utility typography-body-sm-md {
+  font-family: 'Pretendard', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
 @utility typography-body-sm-bold {
   font-family: 'Pretendard', sans-serif;
   font-size: 14px;
