@@ -176,6 +176,20 @@
   font-weight: 400;
 }
 
+@utility typography-action-sm-bold {
+  font-family: 'LINESeedKR', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+@utility typography-action-sm-reg {
+  font-family: 'LINESeedKR', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+}
+
 /* ---------- Navigation (LINE Seed Sans KR) ---------- */
 @utility typography-nav-xl-bold {
   font-family: 'LINESeedKR', sans-serif;
