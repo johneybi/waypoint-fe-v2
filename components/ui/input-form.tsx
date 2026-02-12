@@ -26,7 +26,7 @@ function InputForm({ className, error, ...props }: InputFormProps) {
       <input
         className={cn(
           "w-full bg-transparent outline-none",
-          "typography-input-base-reg text-foreground",
+          "typography-body-sm-reg text-foreground",
           "placeholder:text-muted-foreground",
           "disabled:cursor-not-allowed"
         )}
