@@ -258,6 +258,14 @@
   font-weight: 400;
 }
 
+/* ---------- Title (Pretendard) ---------- */
+@utility typography-title-lg-sb {
+  font-family: 'Pretendard', sans-serif;
+  font-size: 18px;
+  line-height: 28px;
+  font-weight: 600;
+}
+
 /* ---------- Label (Pretendard) ---------- */
 @utility typography-label-base-bold {
   font-family: 'Pretendard', sans-serif;
