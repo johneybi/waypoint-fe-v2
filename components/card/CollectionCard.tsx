@@ -21,45 +21,52 @@ const CollectionCard = ({
   className,
 }: CollectionCardProps) => {
   return (
-    <div
-      className={cn(
-        "w-[335px] overflow-hidden rounded-3xl border border-[#E2E2E2] bg-[#FAFAFA]",
-        "shadow-[0px_10px_15px_-3px_#0000001A,0px_4px_6px_-4px_#0000001A]",
-        className,
-      )}
-    >
-      {/* Image Area */}
-      <div className="relative h-[152px] w-full bg-white">
-        {imageSrc && (
-          <Image
-            src={imageSrc}
-            alt={title}
-            fill
-            className="object-cover"
-          />
-        )}
-      </div>
+    <div className={cn("relative w-[335px] pb-2", className)}>
+      {/* Back card (angle 2deg, neutral-300) */}
+      <div className="absolute inset-x-0 top-0 bottom-2 rounded-3xl bg-neutral-300 rotate-2" />
+      {/* Middle card (angle -3deg, neutral-200) */}
+      <div className="absolute inset-x-0 top-0 bottom-2 rounded-3xl bg-neutral-200 -rotate-3" />
 
-      {/* Text Area */}
-      <div className="flex items-center justify-between pt-2.5 pr-4 pb-4 pl-5">
-        <div className="flex flex-col gap-1">
-          <span className="typography-display-lg-bold text-foreground">
-            {title}
-          </span>
-          {description && (
-            <span className="flex items-center gap-1 typography-body-sm-reg text-muted-foreground">
-              <UsersRound className="size-4" />
-              {description}
-            </span>
+      {/* Main card */}
+      <div
+        className={cn(
+          "relative w-full overflow-hidden rounded-3xl border border-[#E2E2E2] bg-[#FAFAFA]",
+          "shadow-[0px_10px_15px_-3px_#0000001A,0px_4px_6px_-4px_#0000001A]",
+        )}
+      >
+        {/* Image Area */}
+        <div className="relative h-[152px] w-full bg-white">
+          {imageSrc && (
+            <Image
+              src={imageSrc}
+              alt={title}
+              fill
+              className="object-cover"
+            />
           )}
         </div>
-        {/* Menu Button */}
-        <HeaderBtn
-          bgVariant="glass"
-          icon={Ellipsis}
-          label="메뉴"
-          onClick={onMenuClick}
-        />
+
+        {/* Text Area */}
+        <div className="flex items-center justify-between pt-2.5 pr-4 pb-4 pl-5">
+          <div className="flex flex-col gap-1">
+            <span className="typography-display-lg-bold text-foreground">
+              {title}
+            </span>
+            {description && (
+              <span className="flex items-center gap-1 typography-body-sm-reg text-muted-foreground">
+                <UsersRound className="size-4" />
+                {description}
+              </span>
+            )}
+          </div>
+          {/* Menu Button */}
+          <HeaderBtn
+            bgVariant="glass"
+            icon={Ellipsis}
+            label="메뉴"
+            onClick={onMenuClick}
+          />
+        </div>
       </div>
     </div>
   );
