@@ -3,7 +3,12 @@
 import * as React from "react"
 
 import { Button } from "@/components/ui/button"
-import { Drawer, DrawerClose, DrawerContent } from "@/components/ui/drawer"
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerTitle,
+} from "@/components/ui/drawer"
 import { cn } from "@/lib/utils"
 
 type Description = React.ReactNode | React.ReactNode[]
@@ -21,6 +26,7 @@ type BottomSheetProps = {
   open: boolean
   onOpenChange: (open: boolean) => void
   items: BottomSheetItem[]
+  title?: React.ReactNode
   cancelLabel?: React.ReactNode
   onCancel?: () => void
   className?: string
@@ -35,6 +41,7 @@ function BottomSheet({
   open,
   onOpenChange,
   items,
+  title = "작업 메뉴",
   cancelLabel = "취소",
   onCancel,
   className,
@@ -59,6 +66,8 @@ function BottomSheet({
           className
         )}
       >
+        <DrawerTitle className="sr-only">{title}</DrawerTitle>
+
         <div className="px-6 pt-6 pb-2">
           <div className="flex flex-col gap-[10px] pb-3.5">
             {items.map((item) => {
