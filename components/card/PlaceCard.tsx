@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { Ellipsis, MapPin, SquareX, Heart } from "lucide-react";
 import HeaderBtn from "@/components/layout/HeaderBtn";
@@ -12,6 +13,8 @@ interface PlaceCardProps {
   rejectCount?: number;
   likeCount?: number;
   onClick?: () => void;
+  onLikeClick?: () => void;
+  onRejectClick?: () => void;
   onMenuClick?: () => void;
   className?: string;
 }
@@ -23,9 +26,14 @@ const PlaceCard = ({
   rejectCount = 0,
   likeCount = 0,
   onClick,
+  onLikeClick,
+  onRejectClick,
   onMenuClick,
   className,
 }: PlaceCardProps) => {
+  const [isLiked, setIsLiked] = useState(false);
+  const [isRejected, setIsRejected] = useState(false);
+
   return (
     <div
       className={cn(
@@ -64,22 +72,52 @@ const PlaceCard = ({
         {/* Overlay Bar */}
         <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-2.5 pl-3.5">
           <div className="flex gap-2">
-
-                        {/* Like Badge */}
-                        <div className="flex items-center gap-1.5 rounded-full bg-[#FCFCFC99] px-4 py-2 backdrop-blur">
-              <Heart className="size-5 text-foreground" />
+            {/* Like Badge */}
+            <button
+              type="button"
+              onClick={(event) => {
+                event.stopPropagation();
+                setIsLiked((prev) => !prev);
+                onLikeClick?.();
+              }}
+              className="flex cursor-pointer items-center gap-1.5 rounded-full bg-[#FCFCFC99] px-4 py-2 backdrop-blur"
+              aria-label="좋아요"
+            >
+              <Heart
+                className={cn(
+                  "size-5",
+                  isLiked
+                    ? "fill-(--red-500) text-(--red-500)"
+                    : "text-foreground",
+                )}
+              />
               <span className="typography-body-sm-reg text-foreground">
                 {likeCount}
               </span>
-            </div>
+            </button>
             {/* Reject Badge */}
-            <div className="flex items-center gap-1.5 rounded-full bg-[#FCFCFC99] px-4 py-2 backdrop-blur">
-              <SquareX className="size-5 text-foreground" />
+            <button
+              type="button"
+              onClick={(event) => {
+                event.stopPropagation();
+                setIsRejected((prev) => !prev);
+                onRejectClick?.();
+              }}
+              className="flex cursor-pointer items-center gap-1.5 rounded-full bg-[#FCFCFC99] px-4 py-2 backdrop-blur"
+              aria-label="거절"
+            >
+              <SquareX
+                className={cn(
+                  "size-5",
+                  isRejected
+                    ? "fill-(--purple-500) text-white stroke-2"
+                    : "text-foreground",
+                )}
+              />
               <span className="typography-body-sm-reg text-foreground">
                 {rejectCount}
               </span>
-            </div>
-
+            </button>
           </div>
           {/* Menu Button */}
           <div onClick={(event) => event.stopPropagation()}>
