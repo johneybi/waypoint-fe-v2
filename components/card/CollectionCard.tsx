@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Ellipsis } from "lucide-react";
+import { Ellipsis, UsersRound } from "lucide-react";
 import HeaderBtn from "@/components/layout/HeaderBtn";
 import { cn } from "@/lib/utils";
 
@@ -47,7 +47,8 @@ const CollectionCard = ({
             {title}
           </span>
           {description && (
-            <span className="typography-body-sm-reg text-muted-foreground">
+            <span className="flex items-center gap-1 typography-body-sm-reg text-muted-foreground">
+              <UsersRound className="size-4" />
               {description}
             </span>
           )}
