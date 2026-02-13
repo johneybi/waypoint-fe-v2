@@ -57,7 +57,7 @@ const CollectionCard = ({
             {description && (
               <span className="flex items-center gap-1 typography-body-sm-reg text-muted-foreground">
                 <UsersRound className="size-4" />
-                {description}
+                {description}명 참여 중
               </span>
             )}
           </div>
