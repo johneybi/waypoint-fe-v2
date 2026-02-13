@@ -11,6 +11,7 @@ interface PlaceCardProps {
   imageSrc?: string;
   rejectCount?: number;
   likeCount?: number;
+  onClick?: () => void;
   onMenuClick?: () => void;
   className?: string;
 }
@@ -21,6 +22,7 @@ const PlaceCard = ({
   imageSrc,
   rejectCount = 0,
   likeCount = 0,
+  onClick,
   onMenuClick,
   className,
 }: PlaceCardProps) => {
@@ -29,8 +31,10 @@ const PlaceCard = ({
       className={cn(
         "w-full max-w-[335px] overflow-hidden rounded-3xl border border-[#E2E2E2] bg-white",
         "shadow-[0px_10px_15px_-3px_#0000001A,0px_4px_6px_-4px_#0000001A]",
+        onClick && "cursor-pointer",
         className,
       )}
+      onClick={onClick}
     >
       {/* Text Area */}
       <div className="pt-3.5 pr-5 pb-3 pl-5">
@@ -78,12 +82,14 @@ const PlaceCard = ({
 
           </div>
           {/* Menu Button */}
-          <HeaderBtn
-            bgVariant="glass"
-            icon={Ellipsis}
-            label="메뉴"
-            onClick={onMenuClick}
-          />
+          <div onClick={(event) => event.stopPropagation()}>
+            <HeaderBtn
+              bgVariant="glass"
+              icon={Ellipsis}
+              label="메뉴"
+              onClick={onMenuClick}
+            />
+          </div>
         </div>
       </div>
     </div>
