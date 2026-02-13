@@ -21,10 +21,8 @@ const CollectionCard = ({
   className,
 }: CollectionCardProps) => {
   return (
-    <div className={cn("relative w-[335px] pb-2", className)}>
-      {/* Back card (angle 2deg, neutral-300) */}
+    <div className={cn("relative w-full max-w-[335px] pb-2", className)}>
       <div className="absolute inset-x-0 top-0 bottom-2 rounded-3xl bg-neutral-300 rotate-2" />
-      {/* Middle card (angle -3deg, neutral-200) */}
       <div className="absolute inset-x-0 top-0 bottom-2 rounded-3xl bg-neutral-200 -rotate-3" />
 
       {/* Main card */}
@@ -35,7 +33,7 @@ const CollectionCard = ({
         )}
       >
         {/* Image Area */}
-        <div className="relative h-[152px] w-full bg-white">
+        <div className="relative aspect-335/152 w-full bg-white">
           {imageSrc && (
             <Image
               src={imageSrc}
