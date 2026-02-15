@@ -118,8 +118,8 @@ export default function DesignSystemPage() {
           <div className="space-y-2">
             <h3 className="text-sm font-medium text-muted-foreground">Sizes & Icons</h3>
             <div className="flex flex-wrap gap-4 items-center">
-              <Button size="L">Size L (Default)</Button>
-              <Button size="S">Size S</Button>
+              <Button size="lg">Size L (Default)</Button>
+              <Button size="sm">Size S</Button>
               <Button size="icon" variant="outline"><Settings className="size-5" /></Button>
               <Button size="icon" variant="ghost"><Settings className="size-5" /></Button>
               <Button icon={<User className="size-5"/>}>With Left Icon</Button>
