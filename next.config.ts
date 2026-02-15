@@ -1,9 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-<<<<<<< Updated upstream
-  /* config options here */
-=======
   output: 'export',
   images: {
     unoptimized: true,
@@ -22,7 +19,6 @@ const nextConfig: NextConfig = {
       },
     },
   },
->>>>>>> Stashed changes
 };
 
 export default nextConfig;
