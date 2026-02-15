@@ -1,9 +1,10 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import { ArrowLeft, ChevronRight, Map as MapIcon, Menu, CalendarDays } from "lucide-react"
 import { PlaceCard } from "@/components/ui/place-card"
-import { CandidateCard } from "@/components/ui/candidate-card"
+import { CandidateGroupView } from "@/components/ui/candidate-group-view"
 import { TimelineItem } from "@/components/ui/timeline"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { FreeTimeCard } from "@/components/ui/free-time-card"
@@ -18,28 +19,34 @@ export default function PlanViewPage() {
     "Day 1": {
       date: "2024.10.24 (토)",
       items: [
-        { type: "place", time: "02:00", location: "서울시 마포구", title: "헤이리 예술 마을", description: "유럽풍의 정원, 베이커리, 카페, 레스토랑 등이 있는 테마 마을", image: "https://images.unsplash.com/photo-1499591934245-40b55745b905?auto=format&fit=crop&w=800&q=80" },
-        { type: "place", time: "03:00", location: "서울시 마포구", title: "섭지코지", description: "제주 동부 해안에 볼록 튀어나온 섭지코지는 성산일출봉을 배경으로...", image: "https://images.unsplash.com/photo-1577717903315-1691ae25ab3f?auto=format&fit=crop&w=800&q=80", confirmationMessage: "총 3개의 후보지 중 이 장소로 확정되었어요" },
-        { type: "group", time: "04:00", location: "3개의 후보지" },
+        { type: "place", placeType: "ATTRACTION", time: "02:00", location: "서울시 마포구", title: "헤이리 예술 마을", description: "유럽풍의 정원, 베이커리, 카페, 레스토랑 등이 있는 테마 마을", image: "https://images.unsplash.com/photo-1499591934245-40b55745b905?auto=format&fit=crop&w=800&q=80" },
+        { type: "place", placeType: "ATTRACTION", time: "03:00", location: "서울시 마포구", title: "섭지코지", description: "제주 동부 해안에 볼록 튀어나온 섭지코지는 성산일출봉을 배경으로...", image: "https://images.unsplash.com/photo-1577717903315-1691ae25ab3f?auto=format&fit=crop&w=800&q=80", confirmationMessage: "총 3개의 후보지 중 이 장소로 확정되었어요" },
+        { type: "group", time: "04:00", location: "5개의 후보지", candidates: [
+            { title: "우도 산호해수욕장", address: "제주시 우도면 연평리", voteCount: 3, commentCount: 8, author: "User1", type: "BEACH" },
+            { title: "검멀레 해수욕장", address: "제주시 우도면 연평리", voteCount: 2, commentCount: 5, author: "User2", type: "BEACH" },
+            { title: "비양도", address: "제주시 우도면", voteCount: 4, commentCount: 10, author: "User3", type: "ISLAND" },
+            { title: "하고수동 해수욕장", address: "제주시 우도면", voteCount: 1, commentCount: 2, author: "User4", type: "BEACH" },
+            { title: "서빈백사", address: "제주시 우도면", voteCount: 5, commentCount: 12, author: "User5", type: "BEACH" }
+        ]},
         { type: "freetime", time: "17:00", location: "자유 시간", description: "근처 소품샵 구경 및 개별 식사" },
-        { type: "place", time: "05:00", location: "제주시 조천읍", title: "제주도 동부에서 가장 아름다운 유채꽃 명소와 성산일출봉 뷰포인트", description: "제주도 서귀포시 성산읍 고성리 섭지코지 근처 유채꽃밭...", image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80", author: "Jeju_Island_Professional_Photographer_2024", isLast: true }
+        { type: "place", placeType: "ATTRACTION", time: "05:00", location: "제주시 조천읍", title: "제주도 동부에서 가장 아름다운 유채꽃 명소와 성산일출봉 뷰포인트", description: "제주도 서귀포시 성산읍 고성리 섭지코지 근처 유채꽃밭...", image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80", author: "Jeju_Island_Professional_Photographer_2024", isLast: true }
       ]
     },
     "Day 2": {
       date: "2024.10.25 (일)",
       items: [
-        { type: "place", time: "10:00", location: "숙소", title: "호텔 조식", description: "신선한 제주 재료로 만든 조식 뷔페", image: "https://images.unsplash.com/photo-1525351484331-18c3171aa35c?auto=format&fit=crop&w=800&q=80" },
-        { type: "place", time: "12:00", location: "제주시 구좌읍", title: "만장굴", description: "세계 최장 길이의 용암 동굴", image: "https://images.unsplash.com/photo-1476900543704-4312b78632f8?auto=format&fit=crop&w=800&q=80" },
+        { type: "place", placeType: "ACCOMMODATION", time: "10:00", location: "숙소", title: "호텔 조식", description: "신선한 제주 재료로 만든 조식 뷔페", image: "https://images.unsplash.com/photo-1525351484331-18c3171aa35c?auto=format&fit=crop&w=800&q=80" },
+        { type: "place", placeType: "ATTRACTION", time: "12:00", location: "제주시 구좌읍", title: "만장굴", description: "세계 최장 길이의 용암 동굴", image: "https://images.unsplash.com/photo-1476900543704-4312b78632f8?auto=format&fit=crop&w=800&q=80" },
         { type: "freetime", time: "15:00", location: "월정리 해변", description: "투명카약 체험 및 카페 휴식" },
-        { type: "place", time: "18:00", location: "제주시", title: "동문시장", description: "제주의 맛있는 먹거리가 가득한 야시장", image: "https://images.unsplash.com/photo-1533900298318-6b8da08a523e?auto=format&fit=crop&w=800&q=80", isLast: true }
+        { type: "place", placeType: "ATTRACTION", time: "18:00", location: "제주시", title: "동문시장", description: "제주의 맛있는 먹거리가 가득한 야시장", image: "https://images.unsplash.com/photo-1533900298318-6b8da08a523e?auto=format&fit=crop&w=800&q=80", isLast: true }
       ]
     },
     "Day 3": {
       date: "2024.10.26 (월)",
       items: [
-        { type: "place", time: "11:00", location: "체크아웃", title: "숙소 체크아웃", description: "짐 정리 및 로비에서 만남" },
-        { type: "place", time: "13:00", location: "제주시", title: "자매국수", description: "제주 3대 고기국수 맛집", image: "https://images.unsplash.com/photo-1552611052-33e04de081de?auto=format&fit=crop&w=800&q=80" },
-        { type: "place", time: "15:00", location: "제주공항", title: "공항 도착", description: "면세점 쇼핑 및 비행기 탑승 대기", isLast: true }
+        { type: "place", placeType: "ACCOMMODATION", time: "11:00", location: "체크아웃", title: "숙소 체크아웃", description: "짐 정리 및 로비에서 만남" },
+        { type: "place", placeType: "RESTAURANT", time: "13:00", location: "제주시", title: "자매국수", description: "제주 3대 고기국수 맛집", image: "https://images.unsplash.com/photo-1552611052-33e04de081de?auto=format&fit=crop&w=800&q=80" },
+        { type: "place", placeType: "ATTRACTION", time: "15:00", location: "제주공항", title: "공항 도착", description: "면세점 쇼핑 및 비행기 탑승 대기", isLast: true }
       ]
     }
   }
@@ -170,9 +177,11 @@ export default function PlanViewPage() {
                <h1 className="text-2xl font-bold text-foreground">제주도 여행</h1>
                <span className="text-sm font-semibold text-muted-foreground">14박 15일 여행</span>
             </div>
-            <button className="rounded-lg bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground shadow-sm hover:bg-primary/90">
-               편집 하기
-            </button>
+             <Link href="/plan-edit">
+               <button className="rounded-lg bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground shadow-sm hover:bg-primary/90">
+                  편집 하기
+               </button>
+             </Link>
          </div>
 
       </div>
@@ -225,30 +234,7 @@ export default function PlanViewPage() {
                     if (item.type === "group") {
                       return (
                         <TimelineItem key={`${day}-${index}`} time={item.time} location={item.location}>
-                            <div className="flex flex-col gap-3 rounded-[20px] border border-dashed border-border bg-muted/30 p-3">
-                                <div className="px-1">
-                                  <h4 className="text-sm font-semibold text-muted-foreground">아직 장소가 확정되지 않았어요</h4>
-                                </div>
-
-                                <div className="flex flex-col gap-3">
-                                  <CandidateCard 
-                                      title="우도 산호해수욕장"
-                                      address="제주시 우도면 연평리"
-                                      voteCount={3}
-                                      commentCount={8}
-                                  />
-                                  <CandidateCard 
-                                      title="검멀레 해수욕장"
-                                      address="제주시 우도면 연평리"
-                                      voteCount={2}
-                                      commentCount={5}
-                                  />
-                                </div>
-
-                                <button className="flex w-full items-center justify-center rounded-xl bg-background border border-border py-3 text-sm font-bold text-foreground shadow-sm transition-all hover:bg-muted active:scale-95">
-                                    후보지 선택하기
-                                </button>
-                            </div>
+                            <CandidateGroupView items={item.candidates} />
                         </TimelineItem>
                       )
                     }
@@ -269,6 +255,7 @@ export default function PlanViewPage() {
                             image={item.image}
                             confirmationMessage={item.confirmationMessage}
                             author={item.author}
+                            type={item.placeType}
                           />
                       </TimelineItem>
                     )

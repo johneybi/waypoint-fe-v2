@@ -16,6 +16,8 @@ import {
 } from "@/components/ui/alert-dialog"
 import { PlaceCard } from "@/components/ui/place-card"
 import { CandidateCard } from "@/components/ui/candidate-card"
+import { PlaceCardEdit } from "@/components/ui/place-card-edit"
+import { CandidateGroupEdit } from "@/components/ui/candidate-group-edit"
 import { FreeTimeCard } from "@/components/ui/free-time-card"
 import { DayNavigator } from "@/components/ui/day-navigator"
 import { Avatar, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarImage, AvatarBadge } from "@/components/ui/avatar"
@@ -81,10 +83,10 @@ export default function DesignSystemPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-zinc-50 p-8 dark:bg-black font-sans">
+    <div className="min-h-screen bg-background p-8 font-sans">
       <div className="mx-auto max-w-4xl space-y-12">
         <header className="space-y-2">
-          <h1 className="text-3xl font-bold">Design System</h1>
+          <h1 className="text-3xl font-bold text-foreground">Design System</h1>
           <p className="text-muted-foreground">
             A showcase of the UI components used in Waypoint FE v2.
           </p>
@@ -183,12 +185,12 @@ export default function DesignSystemPage() {
                 {/* Checkbox Card */}
                 <div className="flex flex-col gap-2">
                   <span className="text-xs text-muted-foreground">Checkbox Card</span>
-                  <div className="relative flex flex-col items-start rounded-[20px] bg-[#F0F0F0] px-5 py-3 transition-all border-[2px] border-transparent has-[[data-state=checked]]:border-[#0EA5E9]">
+                  <div className="relative flex flex-col items-start rounded-[20px] bg-card px-5 py-3 transition-all border-[2px] border-transparent has-[[data-state=checked]]:border-primary">
                      <div className="flex w-full items-start gap-4">
                         <Checkbox id="check-card" className="mt-1" />
                         <div className="flex flex-1 flex-col gap-1">
-                          <label htmlFor="check-card" className="font-semibold text-[#1C2024] cursor-pointer">헤이리 예술 마을</label>
-                          <div className="flex items-center gap-1 text-[#737373]">
+                          <label htmlFor="check-card" className="font-semibold text-foreground cursor-pointer">헤이리 예술 마을</label>
+                          <div className="flex items-center gap-1 text-muted-foreground">
                              <MapPin className="h-4 w-4" />
                              <span className="text-sm">서울시 마포구 와우산로</span>
                           </div>
@@ -204,12 +206,12 @@ export default function DesignSystemPage() {
               <h3 className="text-sm font-medium text-muted-foreground">Radio Group</h3>
               <RadioGroup defaultValue="location-1">
                  {/* Radio Card 1 */}
-                 <div className="relative flex flex-col items-start rounded-[20px] bg-[#F0F0F0] px-5 py-3 transition-all border-[2px] border-transparent has-[[data-state=checked]]:border-[#0EA5E9]">
+                 <div className="relative flex flex-col items-start rounded-[20px] bg-card px-5 py-3 transition-all border-[2px] border-transparent has-[[data-state=checked]]:border-primary">
                      <div className="flex w-full items-start gap-4">
                         <RadioGroupItem value="location-1" id="radio-1" className="mt-1" />
                         <div className="flex flex-1 flex-col gap-1">
-                          <label htmlFor="radio-1" className="font-semibold text-[#1C2024] cursor-pointer">헤이리 예술 마을</label>
-                          <div className="flex items-center gap-1 text-[#737373]">
+                          <label htmlFor="radio-1" className="font-semibold text-foreground cursor-pointer">헤이리 예술 마을</label>
+                          <div className="flex items-center gap-1 text-muted-foreground">
                              <MapPin className="h-4 w-4" />
                              <span className="text-sm">서울시 마포구 와우산로</span>
                           </div>
@@ -218,12 +220,12 @@ export default function DesignSystemPage() {
                   </div>
 
                  {/* Radio Card 2 (Unchecked state example) */}
-                 <div className="relative flex flex-col items-start rounded-[20px] bg-[#F0F0F0] px-5 py-3 transition-all border-[2px] border-transparent has-[[data-state=checked]]:border-[#0EA5E9]">
+                 <div className="relative flex flex-col items-start rounded-[20px] bg-card px-5 py-3 transition-all border-[2px] border-transparent has-[[data-state=checked]]:border-primary">
                      <div className="flex w-full items-start gap-4">
                         <RadioGroupItem value="location-2" id="radio-2" className="mt-1" />
                         <div className="flex flex-1 flex-col gap-1">
-                          <label htmlFor="radio-2" className="font-semibold text-[#1C2024] cursor-pointer">홍대 예술 거리</label>
-                          <div className="flex items-center gap-1 text-[#737373]">
+                          <label htmlFor="radio-2" className="font-semibold text-foreground cursor-pointer">홍대 예술 거리</label>
+                          <div className="flex items-center gap-1 text-muted-foreground">
                              <MapPin className="h-4 w-4" />
                              <span className="text-sm">서울시 마포구 홍익로</span>
                           </div>
@@ -241,12 +243,12 @@ export default function DesignSystemPage() {
                   <TabsTrigger value="tab1">Tab 1</TabsTrigger>
                   <TabsTrigger value="tab2">Tab 2</TabsTrigger>
                 </TabsList>
-                <div className="mt-4 p-4 rounded-lg bg-gray-50 border border-gray-100">
+                <div className="mt-4 p-4 rounded-lg bg-muted/50 border border-border">
                   <TabsContent value="tab1">
-                    <p className="text-sm text-gray-600">Content for Tab 1</p>
+                    <p className="text-sm text-muted-foreground">Content for Tab 1</p>
                   </TabsContent>
                   <TabsContent value="tab2">
-                    <p className="text-sm text-gray-600">Content for Tab 2</p>
+                    <p className="text-sm text-muted-foreground">Content for Tab 2</p>
                   </TabsContent>
                 </div>
               </Tabs>
@@ -370,6 +372,40 @@ export default function DesignSystemPage() {
              />
           </div>
         </section>
+        {/* Plan Edit Components */}
+        <section className="space-y-4">
+          <h2 className="text-xl font-semibold border-b pb-2">Plan Edit Components</h2>
+          <div className="grid gap-8 max-w-md">
+            
+            {/* Place Card Edit */}
+            <div className="space-y-2">
+               <h3 className="text-sm font-medium text-muted-foreground">Place Card (Edit Mode)</h3>
+               <PlaceCardEdit 
+                 title="헤이리 예술 마을" 
+                 description="유럽풍의 정원, 베이커리, 카페" 
+                 time="09:00"
+               />
+            </div>
+
+            {/* Candidate Group Edit */}
+            <div className="space-y-2">
+               <h3 className="text-sm font-medium text-muted-foreground">Candidate Group (Edit Mode)</h3>
+                <div className="rounded-xl border border-border bg-card p-4">
+                   <CandidateGroupEdit 
+                       candidates={[
+                           { id: "c1", title: "우도 산호해수욕장" },
+                           { id: "c2", title: "검멀레 해수욕장" },
+                           { id: "c3", title: "비양도" },
+                           { id: "c4", title: "하고수동 해수욕장" },
+                           { id: "c5", title: "서빈백사" }
+                       ]} 
+                   />
+                </div>
+            </div>
+
+          </div>
+        </section>
+
         {/* Plan View Components */}
         <section className="space-y-4">
           <h2 className="text-xl font-semibold border-b pb-2">Plan View Components</h2>

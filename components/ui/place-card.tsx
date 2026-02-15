@@ -3,6 +3,7 @@
 import * as React from "react"
 import { Check, Frown, Laugh, MessageCircle, Smile } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { PlaceBadge } from "@/components/ui/place-badge"
 import { cn } from "@/lib/utils"
 // Refactored to use semantic tokens
 
@@ -16,6 +17,7 @@ interface PlaceCardProps extends React.HTMLAttributes<HTMLDivElement> {
   commentCount?: number
   variant?: "confirmed" | "candidate"
   confirmationMessage?: string
+  type?: string
 }
 
 export function PlaceCard({
@@ -29,6 +31,7 @@ export function PlaceCard({
 
   variant = "confirmed",
   confirmationMessage,
+  type = "PLACE",
   ...props
 }: PlaceCardProps) {
   return (
@@ -39,18 +42,22 @@ export function PlaceCard({
       </div>
 
       {/* Main Card */}
-      <div className="relative flex w-full flex-col overflow-hidden rounded-[24px] border border-border/60 bg-white shadow-[0_2px_8px_rgba(0,0,0,0.04)] transition-shadow hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)]">
+      <div className="relative flex w-full flex-col overflow-hidden rounded-[24px] border border-border/60 bg-card shadow-[0_2px_8px_rgba(0,0,0,0.04)] transition-shadow hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)]">
       {/* Header */}
       <div className="flex items-start justify-between gap-3 px-5 pt-5 pb-3">
-        <h3 className="text-lg font-bold text-[#1C2024] leading-snug line-clamp-2 break-keep">{title}</h3>
+        <div className="flex items-start gap-2.5">
+            {/* Type Badge */}
+            <PlaceBadge type={type} className="mt-0.5" />
+            <h3 className="text-lg font-bold text-foreground leading-snug line-clamp-2 break-keep">{title}</h3>
+        </div>
         
         {/* Author Badge */}
-        <div className="shrink-0 flex items-center gap-1.5 rounded-full bg-black/5 pl-1 pr-2.5 py-1">
+        <div className="shrink-0 flex items-center gap-1.5 rounded-full bg-muted pl-1 pr-2.5 py-1">
           <Avatar className="h-5 w-5">
             <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${author}`} alt={author} />
             <AvatarFallback className="text-[10px]">{author[0]}</AvatarFallback>
           </Avatar>
-          <span className="text-xs font-semibold text-[#555] max-w-[80px] truncate">{author}</span>
+          <span className="text-xs font-semibold text-muted-foreground max-w-[80px] truncate">{author}</span>
         </div>
       </div>
 
