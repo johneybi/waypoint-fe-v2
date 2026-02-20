@@ -1,7 +1,7 @@
 'use client'
 
-import React, { useState } from 'react'
-import { Check, ChevronRight, ChevronDown } from 'lucide-react'
+import React, { useState, useMemo } from 'react'
+import { Check, ChevronRight, ChevronDown, Info, Users } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 // -----------------------------------------------------------------------------
@@ -197,37 +197,92 @@ export function ExpenseCard({ item, confirmedMessage }: { item: ExpenseItem, con
 // -----------------------------------------------------------------------------
 // Component: Budget Summary Board
 // -----------------------------------------------------------------------------
-function BudgetSummaryBoard() {
-  return (
-    <div className="px-[20px] pt-8 pb-4">
-      {/* Detailed Lo-fi Budget Context UX */}
-      <div className="bg-card border border-border flex flex-col gap-[4px] items-center justify-center p-[16px] rounded-[16px] w-full mb-[16px] shadow-[0px_1px_3px_0px_rgba(0,0,0,0.05)]">
-        <div className="flex gap-[4px] items-start w-full">
-          <span className="text-[14px] font-medium text-muted-foreground">우리의 여행예산</span>
-          <span className="text-[14px] font-bold text-foreground">1,500,000원</span>
-        </div>
-        <div className="flex gap-[4px] items-center w-full">
-          <span className="text-[14px] font-medium text-muted-foreground">현재 여행 예산이</span>
-          <span className="text-[14px] font-bold text-foreground">290,000원</span>
-          <span className="text-[14px] font-medium text-muted-foreground">만큼 모자라요.</span>
-        </div>
-      </div>
+function BudgetSummaryBoard({ 
+  mode, 
+  totalBudget, 
+  personCount, 
+  totalExpense,
+  daysCount
+}: { 
+  mode: 'budget' | 'expense', 
+  totalBudget: number, 
+  personCount: number, 
+  totalExpense: number,
+  daysCount: number
+}) {
+  const costPerPerson = personCount > 0 ? Math.floor(mode === 'budget' ? totalBudget / personCount : totalExpense / personCount) : 0;
+  const remaining = totalBudget - totalExpense;
+  const isDeficit = remaining < 0;
+  const percentage = totalBudget > 0 ? Math.min((totalExpense / totalBudget) * 100, 100) : 0;
+  const dailyAvg = daysCount > 0 ? Math.floor(totalExpense / daysCount) : 0;
 
-      <div className="flex flex-col gap-[8px] w-full px-[4px]">
-        <div className="flex items-center w-full">
-          <div className="flex flex-col gap-[6px] w-full">
-            <span className="text-[14px] font-semibold text-muted-foreground">현재 최대 지출</span>
-            <span className="text-[16px] font-bold text-foreground">1,790,000원</span>
+  return (
+    <div className="px-[20px] pt-8 pb-4 flex flex-col gap-6">
+      {/* Dynamic Summary Cards */}
+      {mode === 'budget' ? (
+        <div className="bg-card border border-border flex flex-col p-5 relative rounded-2xl shadow-sm w-full gap-5 transition-all">
+          <div className="flex items-center justify-between w-full">
+            <div className="flex flex-col items-start gap-1">
+              <span className="text-[12px] font-bold text-muted-foreground uppercase tracking-wide">총 예산</span>
+              <span className="text-[24px] font-extrabold text-foreground leading-none">{totalBudget.toLocaleString()}원</span>
+            </div>
+            <div className="flex flex-col items-end gap-1">
+              <span className="text-[12px] font-bold text-muted-foreground uppercase tracking-wide">남은 예산</span>
+              <span className={cn("text-[24px] font-extrabold leading-none", isDeficit ? "text-destructive" : "text-primary")}>
+                {Math.abs(remaining).toLocaleString()}원
+              </span>
+            </div>
           </div>
-          <div className="flex flex-col gap-[6px] w-full">
-            <span className="text-[14px] font-semibold text-muted-foreground">1인당 비용</span>
-            <span className="text-[16px] font-bold text-foreground">447,500원</span>
+          <div className="flex flex-col gap-2 w-full mt-1">
+            <div className="flex items-end justify-between w-full">
+              <span className="text-[14px] font-semibold text-muted-foreground">지출액: {totalExpense.toLocaleString()}원</span>
+              <span className="text-[14px] font-bold text-foreground">{percentage.toFixed(1)}%</span>
+            </div>
+            <div className="h-3 w-full rounded-full bg-secondary overflow-hidden">
+              <div 
+                className={cn("h-full rounded-full transition-all duration-500 ease-out", isDeficit ? "bg-destructive" : "bg-primary")} 
+                style={{ width: `${percentage}%` }}
+              />
+            </div>
           </div>
         </div>
-        <span className="text-[12px] font-medium text-muted-foreground">후보지 중 가장 비싼 장소로 계산됐어요!</span>
+      ) : (
+        <div className="bg-card border border-border flex flex-col p-5 relative rounded-2xl shadow-sm w-full gap-5 transition-all">
+          <div className="flex items-center justify-between w-full">
+            <div className="flex flex-col items-start gap-1">
+              <span className="text-[12px] font-bold text-muted-foreground uppercase tracking-wide">총 지출금액</span>
+              <span className="text-[30px] font-extrabold text-primary leading-none">{totalExpense.toLocaleString()}원</span>
+            </div>
+            <div className="flex flex-col items-end gap-1">
+              <span className="text-[12px] font-bold text-muted-foreground uppercase tracking-wide">1일 평균 지출</span>
+              <span className="text-[20px] font-extrabold text-foreground leading-none">{dailyAvg.toLocaleString()}원</span>
+            </div>
+          </div>
+          <div className="flex gap-2 items-center w-full mt-1 bg-muted/50 p-3 rounded-xl border border-border/50">
+             <Info className="h-4 w-4 text-muted-foreground shrink-0" />
+             <span className="text-[13px] font-medium text-muted-foreground leading-snug">미리 정해둔 총 예산이 없습니다.<br/>지출 중심으로 예산을 계획합니다.</span>
+          </div>
+        </div>
+      )}
+
+      {/* Common Metrics */}
+      <div className="flex flex-col gap-3 w-full px-[4px]">
+        <div className="flex items-center justify-between w-full">
+          <div className="flex flex-col gap-1 w-full">
+            <span className="text-[13px] font-bold text-primary flex items-center gap-1"><Users className="h-3.5 w-3.5" /> 1인당 예상 비용</span>
+            <div className="flex items-baseline gap-1">
+              <span className="text-[22px] font-extrabold text-foreground">{costPerPerson.toLocaleString()}</span>
+              <span className="text-[15px] font-bold text-muted-foreground">원</span>
+            </div>
+          </div>
+        </div>
+        <span className="text-[12px] font-medium text-muted-foreground flex items-start gap-1.5 leading-relaxed bg-muted/30 p-2.5 rounded-lg">
+          <span className="shrink-0 text-[14px]">💡</span> 
+          후보지 중 가장 비싼 장소를 기준으로 계산된<br/>최대 예상 비용입니다.
+        </span>
       </div>
     </div>
-  )
+  );
 }
 
 // -----------------------------------------------------------------------------
@@ -248,17 +303,27 @@ const getDayMaxTotal = (day: BudgetDayData) => {
 // Page: Budget View
 // -----------------------------------------------------------------------------
 export function BudgetView() {
+  const overallMaxExpense = useMemo(() => {
+    return daysData.reduce((total, day) => total + getDayMaxTotal(day), 0);
+  }, []);
+
   return (
     <div className="flex h-full w-full flex-col bg-background overflow-y-auto">
       
       {/* Sticky Top Header */}
       <div className="sticky top-0 z-20 flex w-full flex-col bg-background/90 backdrop-blur-md border-b-[0.667px] border-border">
         <div className="flex h-14 items-center justify-between px-[20px]">
-          <h1 className="text-[16px] font-bold text-foreground">예산 모드</h1>
+          <h1 className="text-[16px] font-bold text-foreground">예산 플랜</h1>
         </div>
       </div>
 
-      <BudgetSummaryBoard />
+      <BudgetSummaryBoard 
+        mode="budget"
+        totalBudget={1500000}
+        personCount={4}
+        totalExpense={overallMaxExpense}
+        daysCount={daysData.length}
+      />
 
       {/* Days List */}
       <div className="flex flex-col pb-20">
