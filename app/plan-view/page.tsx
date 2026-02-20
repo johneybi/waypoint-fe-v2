@@ -9,10 +9,12 @@ import { TimelineItem } from "@/components/ui/timeline"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { FreeTimeCard } from "@/components/ui/free-time-card"
 import { DayNavigator } from "@/components/ui/day-navigator"
+import { BudgetView } from "@/components/ui/budget-view"
 import { cn } from "@/lib/utils"
 
 export default function PlanViewPage() {
   const [viewMode, setViewMode] = React.useState<"map" | "list">("map")
+  const [activeTab, setActiveTab] = React.useState<"plan" | "budget">("budget")
   
   // Mock Data
   const scheduleData: Record<string, { date: string; items: any[] }> = {
@@ -186,93 +188,113 @@ export default function PlanViewPage() {
 
       </div>
 
-      {/* Sticky Day Navigator */}
-      <div className={cn("sticky top-14 z-40 transition-all duration-300 ease-in-out overflow-hidden", showNavigator ? "max-h-20 opacity-100" : "max-h-0 opacity-0")}>
-        <DayNavigator 
-            days={days}
-            currentDay={selectedDay}
-            onSelectDay={handleScrollToDay}
-            className="sticky top-0"
-        />
-      </div>
+      <div className="flex-1 transition-all duration-300">
+        {activeTab === "plan" ? (
+          <>
+            {/* Sticky Day Navigator */}
+            <div className={cn("sticky top-14 z-40 transition-all duration-300 ease-in-out overflow-hidden", showNavigator ? "max-h-20 opacity-100" : "max-h-0 opacity-0")}>
+              <DayNavigator 
+                  days={days}
+                  currentDay={selectedDay}
+                  onSelectDay={handleScrollToDay}
+                  className="sticky top-0"
+              />
+            </div>
 
-      {/* Timeline Section */}
-      <div className="flex-1 px-5 pb-24 transition-all duration-300">
-         {days.map((day) => {
-           const schedule = scheduleData[day]
-           const isOpen = openDays[day]
-           
-           return (
-             <div key={day} id={day.replace(" ", "-").toLowerCase()} className="mb-8 scroll-mt-36">
-               {/* Day Header */}
-                <button 
-                  onClick={() => toggleDay(day)}
-                  className="mt-6 flex w-[calc(100%+40px)] items-center justify-between border-b border-border/60 py-4 transition-colors hover:bg-muted/50 active:bg-muted -ml-5 px-5"
-                >
-                   <div className="flex items-center gap-4">
-                       {/* Day Badge */}
-                       <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                          <span className="text-xl font-bold">{day.replace("Day ", "")}</span>
-                       </div>
-                       <div className="flex flex-col items-start gap-0.5">
-                          <h2 className="text-xl font-bold text-foreground">{day.toUpperCase()}</h2>
-                          <p className="text-sm font-medium text-muted-foreground">{schedule.date}</p>
-                       </div>
-                   </div>
-                   
-                   <ChevronRight 
-                      className={cn(
-                        "h-5 w-5 text-muted-foreground transition-transform duration-200",
-                        isOpen ? "rotate-90" : "rotate-0"
-                      )} 
-                   />
-                </button>
+            {/* Timeline Section */}
+            <div className="px-5 pb-24">
+              {days.map((day) => {
+                const schedule = scheduleData[day]
+                const isOpen = openDays[day]
+                
+                return (
+                  <div key={day} id={day.replace(" ", "-").toLowerCase()} className="mb-8 scroll-mt-36">
+                    {/* Day Header */}
+                      <button 
+                        onClick={() => toggleDay(day)}
+                        className="mt-6 flex w-[calc(100%+40px)] items-center justify-between border-b border-border/60 py-4 transition-colors hover:bg-muted/50 active:bg-muted -ml-5 px-5"
+                      >
+                        <div className="flex items-center gap-4">
+                            {/* Day Badge */}
+                            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                                <span className="text-xl font-bold">{day.replace("Day ", "")}</span>
+                            </div>
+                            <div className="flex flex-col items-start gap-0.5">
+                                <h2 className="text-xl font-bold text-foreground">{day.toUpperCase()}</h2>
+                                <p className="text-sm font-medium text-muted-foreground">{schedule.date}</p>
+                            </div>
+                        </div>
+                        
+                        <ChevronRight 
+                            className={cn(
+                              "h-5 w-5 text-muted-foreground transition-transform duration-200",
+                              isOpen ? "rotate-90" : "rotate-0"
+                            )} 
+                        />
+                      </button>
 
-                {/* Dynamic Items */}
-                <div className={cn("flex flex-col pt-4 transition-all", !isOpen && "hidden")}>
-                  {schedule.items.map((item, index) => {
-                    if (item.type === "group") {
-                      return (
-                        <TimelineItem key={`${day}-${index}`} time={item.time} location={item.location}>
-                            <CandidateGroupView items={item.candidates} />
-                        </TimelineItem>
-                      )
-                    }
-                    
-                    if (item.type === "freetime") {
-                      return (
-                        <TimelineItem key={`${day}-${index}`} time={item.time} location={item.location}>
-                            <FreeTimeCard description={item.description} />
-                        </TimelineItem>
-                      )
-                    }
+                      {/* Dynamic Items */}
+                      <div className={cn("flex flex-col pt-4 transition-all", !isOpen && "hidden")}>
+                        {schedule.items.map((item, index) => {
+                          if (item.type === "group") {
+                            return (
+                              <TimelineItem key={`${day}-${index}`} time={item.time} location={item.location}>
+                                  <CandidateGroupView items={item.candidates} />
+                              </TimelineItem>
+                            )
+                          }
+                          
+                          if (item.type === "freetime") {
+                            return (
+                              <TimelineItem key={`${day}-${index}`} time={item.time} location={item.location}>
+                                  <FreeTimeCard description={item.description} />
+                              </TimelineItem>
+                            )
+                          }
 
-                    return (
-                      <TimelineItem key={`${day}-${index}`} time={item.time} location={item.location} isLast={item.isLast}>
-                          <PlaceCard 
-                            title={item.title} 
-                            description={item.description}
-                            image={item.image}
-                            confirmationMessage={item.confirmationMessage}
-                            author={item.author}
-                            type={item.placeType}
-                          />
-                      </TimelineItem>
-                    )
-                  })}
-                </div>
-             </div>
-           )
-         })}
+                          return (
+                            <TimelineItem key={`${day}-${index}`} time={item.time} location={item.location} isLast={item.isLast}>
+                                <PlaceCard 
+                                  title={item.title} 
+                                  description={item.description}
+                                  image={item.image}
+                                  confirmationMessage={item.confirmationMessage}
+                                  author={item.author}
+                                  type={item.placeType}
+                                />
+                            </TimelineItem>
+                          )
+                        })}
+                      </div>
+                  </div>
+                )
+              })}
+            </div>
+          </>
+        ) : (
+          <BudgetView />
+        )}
       </div>
 
       {/* Floating Bottom Tabs */}
       <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50">
          <div className="flex items-center gap-1 rounded-full border border-border/40 bg-background/80 p-1.5 shadow-2xl backdrop-blur-xl ring-1 ring-border">
-            <button className="flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground shadow-md transition-all">
+            <button 
+              onClick={() => setActiveTab("plan")}
+              className={cn(
+                "flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold transition-all",
+                activeTab === "plan" ? "bg-primary text-primary-foreground shadow-md" : "text-muted-foreground hover:bg-muted hover:text-foreground font-medium"
+              )}
+            >
                <span>여행 플랜</span>
             </button>
-            <button className="flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium text-muted-foreground transition-all hover:bg-muted hover:text-foreground">
+            <button 
+              onClick={() => setActiveTab("budget")}
+              className={cn(
+                "flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold transition-all",
+                activeTab === "budget" ? "bg-primary text-primary-foreground shadow-md" : "text-muted-foreground hover:bg-muted hover:text-foreground font-medium"
+              )}
+            >
                <span>예산</span>
             </button>
          </div>

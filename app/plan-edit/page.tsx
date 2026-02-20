@@ -7,6 +7,7 @@ import { PlaceCardEdit } from "@/components/ui/place-card-edit"
 import { CandidateGroupEdit } from "@/components/ui/candidate-group-edit"
 import { TimelineItem } from "@/components/ui/timeline"
 import { DayNavigator } from "@/components/ui/day-navigator"
+import { BudgetEdit } from "@/components/ui/budget-edit"
 import { cn } from "@/lib/utils"
 
 export default function PlanEditPage() {
@@ -56,6 +57,7 @@ export default function PlanEditPage() {
 
   // View State
   const [viewMode, setViewMode] = React.useState<"map" | "list">("list")
+  const [activeTab, setActiveTab] = React.useState<"plan" | "budget">("plan")
   const [showNavigator, setShowNavigator] = React.useState(true)
   const [selectedDay, setSelectedDay] = React.useState("Day 1")
   const observerRef = React.useRef<IntersectionObserver | null>(null)
@@ -186,55 +188,63 @@ export default function PlanEditPage() {
            />
          </div>
        )}
+       
+       <div className="flex-1 transition-all duration-300">
+         {activeTab === "plan" ? (
+           <>
+             {/* Timeline Section */}
+             <div className="px-5 pt-4 pb-24">
+                {days.map((day) => {
+                  const schedule = scheduleData[day]
+                  const isOpen = openDays[day]
+                  
+                  return (
+                    <div key={day} id={day.replace(" ", "-").toLowerCase()} className="mb-8 scroll-mt-36">
+                      {/* Day Header */}
+                       <button 
+                         onClick={() => toggleDay(day)}
+                         className="flex w-[calc(100%+40px)] items-center gap-3 py-4 transition-colors hover:bg-muted/50 -ml-5 px-5"
+                       >
+                          <span className="text-lg font-bold text-foreground">DAY {day.replace("Day ", "")}</span>
+                          <span className="text-sm text-muted-foreground font-normal">하루를 계획해보세요</span>
+                          <ChevronRight 
+                             className={cn(
+                               "h-5 w-5 text-muted-foreground ml-auto transition-transform duration-200",
+                               isOpen ? "rotate-90" : "rotate-0"
+                             )} 
+                          />
+                       </button>
 
-       {/* Timeline Section */}
-       <div className="flex-1 px-5 pt-4">
-          {days.map((day) => {
-            const schedule = scheduleData[day]
-            const isOpen = openDays[day]
-            
-            return (
-              <div key={day} id={day.replace(" ", "-").toLowerCase()} className="mb-8 scroll-mt-36">
-                {/* Day Header */}
-                 <button 
-                   onClick={() => toggleDay(day)}
-                   className="flex w-[calc(100%+40px)] items-center gap-3 py-4 transition-colors hover:bg-muted/50 -ml-5 px-5"
-                 >
-                    <span className="text-lg font-bold text-foreground">DAY {day.replace("Day ", "")}</span>
-                    <span className="text-sm text-muted-foreground font-normal">하루를 계획해보세요</span>
-                    <ChevronRight 
-                       className={cn(
-                         "h-5 w-5 text-muted-foreground ml-auto transition-transform duration-200",
-                         isOpen ? "rotate-90" : "rotate-0"
-                       )} 
-                    />
-                 </button>
-
-                 {/* Dynamic Items */}
-                 <div className={cn("flex flex-col pt-2 transition-all", !isOpen && "hidden")}>
-                   {schedule.items.map((item, index) => {
-                     if (item.type === "group") {
-                        return (
-                            <TimelineItem key={`${day}-${index}`} time={item.time} location={item.location} isLast={item.isLast}>
-                                <CandidateGroupEdit candidates={item.candidates} />
-                            </TimelineItem>
-                        )
-                     }
-                     
-                     return (
-                        <TimelineItem key={`${day}-${index}`} time={item.time} location={item.location} isLast={item.isLast}>
-                            <PlaceCardEdit 
-                              title={item.title || item.location} 
-                              description={item.description}
-                              type={item.placeType}
-                            />
-                        </TimelineItem>
-                     )
-                   })}
-                 </div>
-              </div>
-            )
-          })}
+                       {/* Dynamic Items */}
+                       <div className={cn("flex flex-col pt-2 transition-all", !isOpen && "hidden")}>
+                         {schedule.items.map((item, index) => {
+                           if (item.type === "group") {
+                              return (
+                                  <TimelineItem key={`${day}-${index}`} time={item.time} location={item.location} isLast={item.isLast}>
+                                      <CandidateGroupEdit candidates={item.candidates} />
+                                  </TimelineItem>
+                              )
+                           }
+                           
+                           return (
+                              <TimelineItem key={`${day}-${index}`} time={item.time} location={item.location} isLast={item.isLast}>
+                                  <PlaceCardEdit 
+                                    title={item.title || item.location} 
+                                    description={item.description}
+                                    type={item.placeType}
+                                  />
+                              </TimelineItem>
+                           )
+                         })}
+                       </div>
+                    </div>
+                  )
+                })}
+             </div>
+           </>
+         ) : (
+           <BudgetEdit />
+         )}
        </div>
 
        {/* Unified Floating Toolbar (iOS Capsule Style) */}
@@ -242,10 +252,22 @@ export default function PlanEditPage() {
           
           {/* Segmented Control (Navigation) */}
           <div className="flex shrink-0 items-center gap-1 rounded-full bg-muted/50 p-1">
-             <button className="flex items-center gap-2 rounded-full bg-background px-4 py-2 text-sm font-bold text-foreground shadow-sm transition-all border border-border/50 whitespace-nowrap">
+             <button 
+                onClick={() => setActiveTab("plan")}
+                className={cn(
+                  "flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold shadow-sm transition-all border whitespace-nowrap",
+                  activeTab === "plan" ? "bg-background text-foreground border-border/50" : "font-medium text-muted-foreground border-transparent hover:bg-background/50 hover:text-foreground"
+                )}
+             >
                 <span>여행 플랜</span>
              </button>
-             <button className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-all hover:bg-background/50 hover:text-foreground whitespace-nowrap">
+             <button 
+                onClick={() => setActiveTab("budget")}
+                className={cn(
+                  "flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold shadow-sm transition-all border whitespace-nowrap",
+                  activeTab === "budget" ? "bg-background text-foreground border-border/50" : "font-medium text-muted-foreground border-transparent hover:bg-background/50 hover:text-foreground"
+                )}
+             >
                 <span>예산</span>
              </button>
           </div>
