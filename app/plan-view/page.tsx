@@ -125,16 +125,18 @@ export default function PlanViewPage() {
 
         {/* View Controls */}
         <div className="flex items-center gap-1">
-          <button 
-            onClick={() => setViewMode(viewMode === "map" ? "list" : "map")}
-            className={cn(
-              "p-2 rounded-full transition-colors",
-              viewMode === "map" ? "text-primary bg-primary/10" : "text-foreground hover:bg-muted"
-            )}
-            aria-label="Toggle Map"
-          >
-             <MapIcon className="h-5 w-5" />
-          </button>
+          {activeTab === "plan" && (
+            <button 
+              onClick={() => setViewMode(viewMode === "map" ? "list" : "map")}
+              className={cn(
+                "p-2 rounded-full transition-colors",
+                viewMode === "map" ? "text-primary bg-primary/10" : "text-foreground hover:bg-muted"
+              )}
+              aria-label="Toggle Map"
+            >
+               <MapIcon className="h-5 w-5" />
+            </button>
+          )}
           
           <button 
             onClick={() => setShowNavigator(!showNavigator)}
@@ -159,7 +161,7 @@ export default function PlanViewPage() {
       <div 
         className={cn(
           "sticky top-14 z-30 w-full overflow-hidden bg-muted transition-all duration-300 ease-in-out",
-          viewMode === "map" ? "h-[240px] border-b border-border shadow-sm" : "h-0 border-transparent shadow-none"
+          (viewMode === "map" && activeTab === "plan") ? "h-[240px] border-b border-border shadow-sm" : "h-0 border-transparent shadow-none"
         )}
       >
          <div className="absolute inset-0 flex items-center justify-center text-muted-foreground/40">
@@ -189,24 +191,24 @@ export default function PlanViewPage() {
       </div>
 
       <div className="flex-1 transition-all duration-300">
+        {/* Sticky Day Navigator (Visible for both Plan and Budget) */}
+        <div 
+          className={cn(
+            "sticky z-40 transition-all duration-300 ease-in-out overflow-hidden",
+            (viewMode === "map" && activeTab === "plan") ? "top-[296px]" : "top-14",
+            showNavigator ? "max-h-20 opacity-100" : "max-h-0 opacity-0"
+          )}
+        >
+          <DayNavigator 
+              days={days}
+              currentDay={selectedDay}
+              onSelectDay={handleScrollToDay}
+              className="bg-background border-b border-border"
+          />
+        </div>
+
         {activeTab === "plan" ? (
           <>
-            {/* Sticky Day Navigator */}
-            <div 
-              className={cn(
-                "sticky z-40 transition-all duration-300 ease-in-out overflow-hidden",
-                viewMode === "map" ? "top-[296px]" : "top-14",
-                showNavigator ? "max-h-20 opacity-100" : "max-h-0 opacity-0"
-              )}
-            >
-              <DayNavigator 
-                  days={days}
-                  currentDay={selectedDay}
-                  onSelectDay={handleScrollToDay}
-                  className="bg-background border-b border-border"
-              />
-            </div>
-
             {/* Timeline Section */}
             <div className="px-5 pb-24">
               {days.map((day) => {

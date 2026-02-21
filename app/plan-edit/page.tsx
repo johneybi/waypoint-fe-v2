@@ -125,16 +125,18 @@ export default function PlanEditPage() {
 
          {/* Right: View Controls */}
          <div className="flex items-center gap-1 -mr-1">
-           <button 
-             onClick={() => setViewMode(viewMode === "map" ? "list" : "map")}
-             className={cn(
-               "p-2 rounded-full transition-colors",
-               viewMode === "map" ? "text-primary bg-primary/10" : "text-muted-foreground hover:bg-muted"
-             )}
-             aria-label="Toggle Map"
-           >
-              <MapIcon className="h-5 w-5" />
-           </button>
+           {activeTab === "plan" && (
+             <button 
+               onClick={() => setViewMode(viewMode === "map" ? "list" : "map")}
+               className={cn(
+                 "p-2 rounded-full transition-colors",
+                 viewMode === "map" ? "text-primary bg-primary/10" : "text-muted-foreground hover:bg-muted"
+               )}
+               aria-label="Toggle Map"
+             >
+                <MapIcon className="h-5 w-5" />
+             </button>
+           )}
            
            <button 
              onClick={() => setShowNavigator(!showNavigator)}
@@ -153,7 +155,7 @@ export default function PlanEditPage() {
        <div 
          className={cn(
            "sticky top-14 z-30 w-full overflow-hidden bg-muted transition-all duration-300 ease-in-out",
-           viewMode === "map" ? "h-[240px] border-b border-border shadow-sm" : "h-0 border-transparent shadow-none"
+           (viewMode === "map" && activeTab === "plan") ? "h-[240px] border-b border-border shadow-sm" : "h-0 border-transparent shadow-none"
          )}
        >
           <div className="absolute inset-0 flex items-center justify-center text-muted-foreground/40">
@@ -177,12 +179,12 @@ export default function PlanEditPage() {
           </div>
        </div>
 
-       {/* Day Navigator */}
+       {/* Sticky Day Navigator (Visible for both Plan and Budget) */}
        {showNavigator && (
          <div 
            className={cn(
              "sticky z-40 bg-background border-b border-border transition-all duration-300 ease-in-out",
-             viewMode === "map" ? "top-[296px]" : "top-14"
+             (viewMode === "map" && activeTab === "plan") ? "top-[296px]" : "top-14"
            )}
          >
            <DayNavigator 
