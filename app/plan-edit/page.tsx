@@ -152,8 +152,8 @@ export default function PlanEditPage() {
        {/* Map Area (Placeholder) */}
        <div 
          className={cn(
-           "relative w-full overflow-hidden bg-muted transition-all duration-300 ease-in-out",
-           viewMode === "map" ? "h-[240px]" : "h-0"
+           "sticky top-14 z-30 w-full overflow-hidden bg-muted transition-all duration-300 ease-in-out",
+           viewMode === "map" ? "h-[240px] border-b border-border shadow-sm" : "h-0 border-transparent shadow-none"
          )}
        >
           <div className="absolute inset-0 flex items-center justify-center text-muted-foreground/40">
@@ -179,7 +179,12 @@ export default function PlanEditPage() {
 
        {/* Day Navigator */}
        {showNavigator && (
-         <div className="sticky top-14 z-40 bg-background border-b border-border">
+         <div 
+           className={cn(
+             "sticky z-40 bg-background border-b border-border transition-all duration-300 ease-in-out",
+             viewMode === "map" ? "top-[296px]" : "top-14"
+           )}
+         >
            <DayNavigator 
               days={days}
               currentDay={selectedDay}
@@ -199,7 +204,14 @@ export default function PlanEditPage() {
                   const isOpen = openDays[day]
                   
                   return (
-                    <div key={day} id={day.replace(" ", "-").toLowerCase()} className="mb-8 scroll-mt-36">
+                    <div 
+                      key={day} 
+                      id={day.replace(" ", "-").toLowerCase()} 
+                      className={cn(
+                        "mb-8",
+                        viewMode === "map" ? "scroll-mt-[372px]" : "scroll-mt-36"
+                      )}
+                    >
                       {/* Day Header */}
                        <button 
                          onClick={() => toggleDay(day)}

@@ -158,8 +158,8 @@ export default function PlanViewPage() {
       {/* Map Area (Placeholder) */}
       <div 
         className={cn(
-          "relative w-full overflow-hidden bg-muted transition-all duration-300 ease-in-out",
-          viewMode === "map" ? "h-[240px]" : "h-0"
+          "sticky top-14 z-30 w-full overflow-hidden bg-muted transition-all duration-300 ease-in-out",
+          viewMode === "map" ? "h-[240px] border-b border-border shadow-sm" : "h-0 border-transparent shadow-none"
         )}
       >
          <div className="absolute inset-0 flex items-center justify-center text-muted-foreground/40">
@@ -192,12 +192,18 @@ export default function PlanViewPage() {
         {activeTab === "plan" ? (
           <>
             {/* Sticky Day Navigator */}
-            <div className={cn("sticky top-14 z-40 transition-all duration-300 ease-in-out overflow-hidden", showNavigator ? "max-h-20 opacity-100" : "max-h-0 opacity-0")}>
+            <div 
+              className={cn(
+                "sticky z-40 transition-all duration-300 ease-in-out overflow-hidden",
+                viewMode === "map" ? "top-[296px]" : "top-14",
+                showNavigator ? "max-h-20 opacity-100" : "max-h-0 opacity-0"
+              )}
+            >
               <DayNavigator 
                   days={days}
                   currentDay={selectedDay}
                   onSelectDay={handleScrollToDay}
-                  className="sticky top-0"
+                  className="bg-background border-b border-border"
               />
             </div>
 
@@ -208,7 +214,14 @@ export default function PlanViewPage() {
                 const isOpen = openDays[day]
                 
                 return (
-                  <div key={day} id={day.replace(" ", "-").toLowerCase()} className="mb-8 scroll-mt-36">
+                  <div 
+                    key={day} 
+                    id={day.replace(" ", "-").toLowerCase()} 
+                    className={cn(
+                      "mb-8",
+                      viewMode === "map" ? "scroll-mt-[372px]" : "scroll-mt-36"
+                    )}
+                  >
                     {/* Day Header */}
                       <button 
                         onClick={() => toggleDay(day)}
