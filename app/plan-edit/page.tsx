@@ -288,11 +288,13 @@ export default function PlanEditPage() {
 
           <div className="w-px h-8 bg-border/50 shrink-0" />
 
-          {/* Primary Action (Add Place) */}
-          <button className="flex shrink-0 h-11 items-center gap-2 rounded-full bg-primary px-5 text-primary-foreground shadow-lg transition-transform hover:scale-105 active:scale-95 duration-200">
-             <Plus className="h-5 w-5" />
-             <span className="font-bold text-sm leading-none whitespace-nowrap pt-0.5">장소 추가</span>
-          </button>
+          {/* Primary Action (Add Place) - Only show in Plan tab */}
+          {activeTab === "plan" && (
+            <button className="flex shrink-0 h-11 items-center gap-2 rounded-full bg-primary px-5 text-primary-foreground shadow-lg transition-transform hover:scale-105 active:scale-95 duration-200">
+               <Plus className="h-5 w-5" />
+               <span className="font-bold text-sm leading-none whitespace-nowrap pt-0.5">장소 추가</span>
+            </button>
+          )}
        </div>
 
     </div>
